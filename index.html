@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Egypt Eats | Restaurant Finder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sand: #f4e6d2;
+      --sun: #f6b654;
+      --desert: #d98736;
+      --deep: #1f1a17;
+      --oasis: #1d7a85;
+      --mist: #f9f7f2;
+      --stone: #4b4139;
+      --glow: rgba(246, 182, 84, 0.22);
+      --card: rgba(255, 255, 255, 0.78);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Manrope', 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at 20% 20%, rgba(246,182,84,0.18), transparent 32%),
+                  radial-gradient(circle at 80% 10%, rgba(29,122,133,0.16), transparent 36%),
+                  linear-gradient(145deg, #fffaf2 0%, #f4e6d2 60%, #f3dfc1 100%);
+      color: var(--deep);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+
+    header.hero {
+      position: relative;
+      padding: 56px 24px 48px;
+      background: linear-gradient(135deg, rgba(29,122,133,0.18), rgba(246,182,84,0.18));
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 22px;
+      overflow: hidden;
+    }
+
+    header.hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.7), transparent 35%),
+                  radial-gradient(circle at 80% 0%, rgba(255,255,255,0.55), transparent 40%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(29,122,133,0.12);
+      color: var(--oasis);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', 'Manrope', serif;
+      font-size: clamp(34px, 5vw, 52px);
+      margin: 18px 0 12px;
+      color: var(--deep);
+      letter-spacing: -0.8px;
+    }
+
+    .subtitle {
+      max-width: 720px;
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--stone);
+      margin-bottom: 24px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,0.08);
+      background: #fff;
+      color: var(--deep);
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      transition: transform 140ms ease, box-shadow 140ms ease;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, var(--oasis), #0f5b64);
+      color: #fff;
+      box-shadow: 0 12px 30px rgba(29,122,133,0.35);
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    section { margin-top: 48px; }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: -0.3px;
+      color: var(--deep);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip {
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.08);
+      background: rgba(255,255,255,0.85);
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--stone);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.04);
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .filter-block {
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.04);
+    }
+
+    .filter-title {
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--deep);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid rgba(0,0,0,0.05);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 18px;
+      color: var(--deep);
+      letter-spacing: -0.2px;
+    }
+
+    .badge {
+      padding: 6px 10px;
+      background: var(--glow);
+      color: var(--desert);
+      font-weight: 800;
+      border-radius: 12px;
+      font-size: 12px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: var(--stone);
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .pill {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(29,122,133,0.12);
+      color: var(--oasis);
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .desc { color: var(--stone); line-height: 1.5; }
+
+    .link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--oasis);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .spotlight {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .spot-card {
+      border-radius: 16px;
+      padding: 14px;
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.05);
+    }
+
+    .info-strip {
+      margin-top: 32px;
+      padding: 18px;
+      background: linear-gradient(120deg, rgba(29,122,133,0.16), rgba(246,182,84,0.12));
+      border-radius: 18px;
+      border: 1px solid rgba(0,0,0,0.04);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .info-item h4 { margin: 0 0 8px; font-size: 16px; }
+    .info-item p { margin: 0; color: var(--stone); line-height: 1.5; }
+
+    footer {
+      margin-top: 48px;
+      padding: 22px;
+      border-radius: 20px;
+      background: #0f5b64;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    footer .cta { font-size: 20px; font-weight: 800; letter-spacing: -0.2px; }
+
+    @media (max-width: 720px) {
+      .section-head { flex-direction: column; align-items: flex-start; }
+      header.hero { padding: 40px 18px; }
+      .filters { grid-template-columns: 1fr; }
+      .page { padding: 22px 16px 64px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <div class="eyebrow">Egypt eats · curated</div>
+      <h1>Find your next unforgettable restaurant in Egypt</h1>
+      <p class="subtitle">From Nile-side fine dining to hidden koshary spots, explore handpicked places across Cairo, Alexandria, Luxor, and beyond. Filter by city, cuisine, and budget to book with confidence.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#recommendations">See top picks</a>
+        <a class="btn" href="#neighborhoods">Neighborhood gems</a>
+        <span class="pill">Updated weekly</span>
+      </div>
+    </header>
+
+    <section aria-labelledby="filters">
+      <div class="section-head">
+        <h2 id="filters">Quick filters</h2>
+        <div class="chip">No sign-in needed</div>
+      </div>
+      <div class="filters">
+        <div class="filter-block">
+          <div class="filter-title">Cities</div>
+          <div class="chips">
+            <div class="chip">Cairo</div>
+            <div class="chip">Alexandria</div>
+            <div class="chip">Giza</div>
+            <div class="chip">Luxor</div>
+            <div class="chip">Aswan</div>
+          </div>
+        </div>
+        <div class="filter-block">
+          <div class="filter-title">Cuisine</div>
+          <div class="chips">
+            <div class="chip">Egyptian comfort</div>
+            <div class="chip">Seafood</div>
+            <div class="chip">Levantine</div>
+            <div class="chip">Mediterranean</div>
+            <div class="chip">Steakhouse</div>
+            <div class="chip">Vegan</div>
+          </div>
+        </div>
+        <div class="filter-block">
+          <div class="filter-title">Budget</div>
+          <div class="chips">
+            <div class="chip">$</div>
+            <div class="chip">$$</div>
+            <div class="chip">$$$</div>
+            <div class="chip">Date night</div>
+            <div class="chip">Groups</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="recommendations" aria-labelledby="featured">
+      <div class="section-head">
+        <h2 id="featured">Featured picks</h2>
+        <div class="chip">8 curated spots</div>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <div class="card-header">
+            <h3>Zooba</h3><span class="badge">Cairo</span>
+          </div>
+          <div class="meta">Egyptian comfort · $$ · Zamalek</div>
+          <div class="pill-row"><span class="pill">Signature: Taamia</span><span class="pill">Casual</span></div>
+          <p class="desc">Colorful, modern take on street classics. Order koshary with their spicy dakka and a side of freshly baked baladi bread.</p>
+          <a class="link" href="https://goo.gl/maps/t9TjLExYknm8ujef6" target="_blank" rel="noopener">View map</a>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h3>Sequoia</h3><span class="badge">Cairo</span>
+          </div>
+          <div class="meta">Mediterranean · $$$ · Zamalek (Nile)</div>
+          <div class="pill-row"><span class="pill">Signature: Mezze spread</span><span class="pill">Sunset views</span></div>
+          <p class="desc">Open-air decks on the Nile with Levantine plates and fresh seafood. Reserve before sunset for the river breeze.</p>
+          <a class="link" href="https://goo.gl/maps/Lw1URaA6T7v8ie7H9" target="_blank" rel="noopener">View map</a>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h3>Kazoku</h3><span class="badge">New Cairo</span>
+          </div>
+          <div class="meta">Japanese · $$$ · Waterway</div>
+          <div class="pill-row"><span class="pill">Signature: Black cod</span><span class="pill">Date night</span></div>
+          <p class="desc">Polished Japanese with standout sushi, robata, and cocktails. Go for the tasting menu and a seat on the terrace.</p>
+          <a class="link" href="https://goo.gl/maps/5jgRoXJH2CCjE9fB9" target="_blank" rel="noopener">View map</a>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h3>Abou El Sid</h3><span class="badge">Cairo</span>
+          </div>
+          <div class="meta">Egyptian classics · $$ · Zamalek / Heliopolis</div>
+          <div class="pill-row"><span class="pill">Signature: Molokhia</span><span class="pill">Vintage vibes</span></div>
+          <p class="desc">Candlelit rooms, ornate ceilings, and hearty Alexandrian liver, mahshi, and tajines. Great for visitors.</p>
+          <a class="link" href="https://goo.gl/maps/3b7jLy3m8ESoWNji9" target="_blank" rel="noopener">View map</a>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h3>Greek Club (Grecian)</h3><span class="badge">Alexandria</span>
+          </div>
+          <div class="meta">Seafood · $$ · El Mansheya</div>
+          <div class="pill-row"><span class="pill">Signature: Grilled shrimp</span><span class="pill">Sea breeze</span></div>
+          <p class="desc">Simple, fresh fish and meze with sweeping harbor views. Pick your catch at the counter and add taramasalata.</p>
+          <a class="link" href="https://goo.gl/maps/5gPzFucnRgr9aPFYA" target="_blank" rel="noopener">View map</a>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h3>Maison Thomas</h3><span class="badge">Cairo</span>
+          </div>
+          <div class="meta">Pizzeria · $$ · Zamalek</div>
+          <div class="pill-row"><span class="pill">Signature: Truffle pizza</span><span class="pill">Late night</span></div>
+          <p class="desc">Historic wood-fired pies and deli sandwiches. Still the late-night go-to; grab a corner booth.</p>
+          <a class="link" href="https://goo.gl/maps/WdF9n5k4yD6A3ZCk6" target="_blank" rel="noopener">View map</a>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h3>Sofra</h3><span class="badge">Luxor</span>
+          </div>
+          <div class="meta">Upper Egyptian · $$ · Downtown Luxor</div>
+          <div class="pill-row"><span class="pill">Signature: Pigeon mahshi</span><span class="pill">Rooftop</span></div>
+          <p class="desc">Terracotta rooftop serving slow-cooked stews, tajines, and homemade jams. Book ahead in peak season.</p>
+          <a class="link" href="https://goo.gl/maps/zJ9BvUQquQAAFTVQ6" target="_blank" rel="noopener">View map</a>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h3>El Masry</h3><span class="badge">Aswan</span>
+          </div>
+          <div class="meta">Nubian & seafood · $ · Corniche</div>
+          <div class="pill-row"><span class="pill">Signature: Grilled tilapia</span><span class="pill">Casual</span></div>
+          <p class="desc">Laid-back spot for Nubian spices, fresh fish, and tameya. Sit outside for Nile views and quick service.</p>
+          <a class="link" href="https://goo.gl/maps/NJ6uFcCqpss4LJpM6" target="_blank" rel="noopener">View map</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="neighborhoods" aria-labelledby="spotlights">
+      <div class="section-head">
+        <h2 id="spotlights">Neighborhood spotlights</h2>
+        <div class="chip">Cairo focus</div>
+      </div>
+      <div class="spotlight">
+        <div class="spot-card">
+          <div class="pill">Zamalek</div>
+          <div class="filter-title">For walks, galleries, and Nile views.</div>
+          <p class="desc"><strong>Left Bank</strong> for brunch on the water; <strong>Crimson</strong> for rooftop steaks and sunsets.</p>
+        </div>
+        <div class="spot-card">
+          <div class="pill">Maadi</div>
+          <div class="filter-title">Leafy streets and cafes.</div>
+          <p class="desc"><strong>Ovio</strong> for sourdough brunch; <strong>Lucille's</strong> for burgers and pancakes; <strong>Ralph's German</strong> for pretzels and schnitzel.</p>
+        </div>
+        <div class="spot-card">
+          <div class="pill">Downtown Cairo</div>
+          <div class="filter-title">Historic, walkable, lively.</div>
+          <p class="desc"><strong>Kazaz</strong> for shawarma on the go; <strong>Felfela</strong> for classic mezze; <strong>Room Art Space</strong> for live music coffee breaks.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="info-strip">
+      <div class="info-item">
+        <h4>How to book</h4>
+        <p>Most spots take calls or WhatsApp; upscale venues often use Resy-like forms on their site. For seaside places, ask for outdoor seating.</p>
+      </div>
+      <div class="info-item">
+        <h4>Peak times</h4>
+        <p>Thursday and Friday nights are busiest in Cairo/Alex; sunsets fill up Nile and seaside terraces. Reserve 24-48 hours ahead.</p>
+      </div>
+      <div class="info-item">
+        <h4>Local tips</h4>
+        <p>Ask for tap water if you do not want bottled, and check service fees on the bill (often included). Tipping 10-12% is appreciated.</p>
+      </div>
+    </div>
+
+    <footer>
+      <div class="cta">Ready to dine? Save your shortlist.</div>
+      <div class="desc">Pick two from Cairo and one from outside the city for a balanced food tour. Share with friends before you book.</div>
+      <a class="btn" href="#featured">Back to top picks</a>
+    </footer>
+  </div>
+</body>
+</html>
